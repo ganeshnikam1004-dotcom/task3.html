@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager (CRUD) - Task 3</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fe;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { background-color: #218838; }
+        ul { list-style-type: none; padding: 0; margin: 0; }
+        li {
+            background: #f8f9fa;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #007bff;
+        }
+        .action-btns button {
+            padding: 5px 8px;
+            font-size: 12px;
+            margin-left: 4px;
+        }
+        .edit-btn { background-color: #ffc107; color: #000; }
+        .delete-btn { background-color: #dc3545; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Task Management (CRUD)</h2>
+    
+    <div class="input-group">
+        <input type="text" id="taskInput" placeholder="नवीन टास्क एंटर करा...">
+        <button onclick="addOrUpdateTask()" id="saveBtn">Add</button>
+    </div>
+
+    <ul id="taskList"></ul>
+</div>
+
+<script>
+    let tasks = ["Learn HTML", "Build JS Project"];
+    let editIndex = -1;
+
+    // READ Operations
+    function renderTasks() {
+        const taskList = document.getElementById("taskList");
+        taskList.innerHTML = "";
+
+        tasks.forEach((task, index) => {
+            taskList.innerHTML += `
+                <li>
+                    <span>${task}</span>
+                    <div class="action-btns">
+                        <button class="edit-btn" onclick="editTask(${index})">Edit</button>
+                        <button class="delete-btn" onclick="deleteTask(${index})">Delete</button>
+                    </div>
+                </li>
+            `;
+        });
+    }
+
+    // CREATE & UPDATE Operations
+    function addOrUpdateTask() {
+        const taskInput = document.getElementById("taskInput");
+        const val = taskInput.value.trim();
+
+        if (!val) {
+            alert("कृपया टास्क लिहा!");
+            return;
+        }
+
+        if (editIndex === -1) {
+            // Create
+            tasks.push(val);
+        } else {
+            // Update
+            tasks[editIndex] = val;
+            editIndex = -1;
+            document.getElementById("saveBtn").innerText = "Add";
+            document.getElementById("saveBtn").style.backgroundColor = "#28a745";
+        }
+
+        taskInput.value = "";
+        renderTasks();
+    }
+
+    // Prepare UPDATE
+    function editTask(index) {
+        document.getElementById("taskInput").value = tasks[index];
+        editIndex = index;
+        document.getElementById("saveBtn").innerText = "Update";
+        document.getElementById("saveBtn").style.backgroundColor = "#ffc107";
+    }
+
+    // DELETE Operation
+    function deleteTask(index) {
+        tasks.splice(index, 1);
+        renderTasks();
+    }
+
+    // Initial Display
+    renderTasks();
+</script>
+
+</body>
+</html
